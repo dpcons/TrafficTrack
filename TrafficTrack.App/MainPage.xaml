@@ -1,0 +1,319 @@
+<Page x:Class="TrafficTrack.App.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:TrafficTrack.App"
+      xmlns:utu="using:Uno.Toolkit.UI"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <!-- Login Panel (quando non autenticato) -->
+        <StackPanel x:Name="LoginPanel"
+                    Visibility="{x:Bind ViewModel.IsAuthenticated, Mode=OneWay, Converter={StaticResource InverseBoolToVisibility}}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="40"
+                    MaxWidth="400">
+
+            <TextBlock Text="TrafficTrack"
+                       FontSize="32"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,8" />
+            
+            <TextBlock Text="Monitoraggio Traffico in Tempo Reale"
+                       FontSize="14"
+                       Foreground="Gray"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,32" />
+
+            <TextBox Header="Username"
+                     Text="{x:Bind LoginVM.Username, Mode=TwoWay}"
+                     Margin="0,0,0,16" />
+
+            <PasswordBox Header="Password"
+                         Password="{x:Bind LoginVM.Password, Mode=TwoWay}"
+                         Margin="0,0,0,16" />
+
+            <TextBlock Text="{x:Bind LoginVM.ErrorMessage, Mode=OneWay}"
+                       Foreground="Red"
+                       Visibility="{x:Bind LoginVM.ErrorMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}"
+                       Margin="0,0,0,16" />
+
+            <Button Content="{x:Bind LoginVM.ActionButtonText, Mode=OneWay}"
+                    Command="{x:Bind LoginVM.LoginCommand}"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,0,8"
+                    Style="{StaticResource AccentButtonStyle}" />
+
+            <Button Content="{x:Bind LoginVM.ToggleButtonText, Mode=OneWay}"
+                    Command="{x:Bind LoginVM.ToggleModeCommand}"
+                    HorizontalAlignment="Center"
+                    Background="Transparent" />
+
+            <ProgressRing IsActive="{x:Bind LoginVM.IsLoading, Mode=OneWay}"
+                          Margin="0,16,0,0" />
+        </StackPanel>
+
+        <!-- Main Content (quando autenticato) -->
+        <Grid x:Name="MainContent"
+              Visibility="{x:Bind ViewModel.IsAuthenticated, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Background="{ThemeResource SystemAccentColor}"
+                  Padding="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="?? TrafficTrack"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="8">
+                    <TextBlock Text="{x:Bind ViewModel.CurrentUsername, Mode=OneWay}"
+                               Foreground="White"
+                               VerticalAlignment="Center" />
+                    <Button Content="Esci"
+                            Command="{x:Bind ViewModel.LogoutCommand}"
+                            Background="Transparent"
+                            Foreground="White" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Content -->
+            <ScrollViewer Grid.Row="1"
+                          Padding="16">
+                <StackPanel Spacing="16">
+
+                    <!-- Area Selection -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="8"
+                            Padding="16">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="?? Seleziona Area"
+                                       FontSize="18"
+                                       FontWeight="SemiBold" />
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBox Header="Latitudine 1"
+                                         Text="{x:Bind ViewModel.Lat1, Mode=TwoWay}"
+                                         Margin="0,0,8,8" />
+                                <TextBox Header="Longitudine 1"
+                                         Text="{x:Bind ViewModel.Lon1, Mode=TwoWay}"
+                                         Grid.Column="1"
+                                         Margin="8,0,0,8" />
+                                <TextBox Header="Latitudine 2"
+                                         Text="{x:Bind ViewModel.Lat2, Mode=TwoWay}"
+                                         Grid.Row="1"
+                                         Margin="0,8,8,0" />
+                                <TextBox Header="Longitudine 2"
+                                         Text="{x:Bind ViewModel.Lon2, Mode=TwoWay}"
+                                         Grid.Row="1"
+                                         Grid.Column="1"
+                                         Margin="8,8,0,0" />
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="8">
+                                <Button Content="?? Carica Dati"
+                                        Command="{x:Bind ViewModel.LoadAllDataCommand}"
+                                        Style="{StaticResource AccentButtonStyle}" />
+                                <Button Content="?? Aree Salvate"
+                                        Command="{x:Bind ViewModel.LoadSavedAreasCommand}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Error Message -->
+                    <Border Background="#FFF0F0"
+                            CornerRadius="8"
+                            Padding="16"
+                            Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}">
+                        <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                                   Foreground="Red" />
+                    </Border>
+
+                    <!-- Loading -->
+                    <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                                  HorizontalAlignment="Center" />
+
+                    <!-- Traffic Data -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Visibility="{x:Bind ViewModel.TrafficData, Mode=OneWay, Converter={StaticResource NullToVisibility}}">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="?? Stato Traffico"
+                                       FontSize="18"
+                                       FontWeight="SemiBold" />
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <TextBlock Text="Rilevazioni"
+                                               Foreground="Gray"
+                                               FontSize="12" />
+                                    <TextBlock Text="{x:Bind ViewModel.TrafficData.TotalFlowRecords, Mode=OneWay}"
+                                               FontSize="24"
+                                               FontWeight="Bold" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Velocità Media"
+                                               Foreground="Gray"
+                                               FontSize="12" />
+                                    <TextBlock FontSize="24"
+                                               FontWeight="Bold">
+                                        <Run Text="{x:Bind ViewModel.TrafficData.AverageSpeed, Mode=OneWay}" />
+                                        <Run Text=" km/h" FontSize="14" />
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Congestione"
+                                               Foreground="Gray"
+                                               FontSize="12" />
+                                    <TextBlock FontSize="24"
+                                               FontWeight="Bold">
+                                        <Run Text="{x:Bind ViewModel.TrafficData.AverageCongestion, Mode=OneWay}" />
+                                        <Run Text="%" FontSize="14" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Events Data -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Visibility="{x:Bind ViewModel.EventsData, Mode=OneWay, Converter={StaticResource NullToVisibility}}">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="?? Eventi Stradali"
+                                       FontSize="18"
+                                       FontWeight="SemiBold" />
+
+                            <TextBlock>
+                                <Run Text="Totale eventi: " />
+                                <Run Text="{x:Bind ViewModel.EventsData.TotalEvents, Mode=OneWay}"
+                                     FontWeight="Bold" />
+                            </TextBlock>
+
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.EventsData.Events, Mode=OneWay}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                                CornerRadius="4"
+                                                Padding="12"
+                                                Margin="0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Border Background="{ThemeResource SystemAccentColor}"
+                                                        CornerRadius="4"
+                                                        Padding="8,4"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,12,0">
+                                                    <TextBlock Text="{Binding TypeDisplayName}"
+                                                               Foreground="White"
+                                                               FontSize="12" />
+                                                </Border>
+
+                                                <StackPanel Grid.Column="1"
+                                                            Spacing="4">
+                                                    <TextBlock Text="{Binding Description}"
+                                                               TextWrapping="Wrap" />
+                                                    <TextBlock Foreground="Gray"
+                                                               FontSize="12">
+                                                        <Run Text="{Binding RoadName}" />
+                                                        <Run Text=" • " />
+                                                        <Run Text="{Binding SeverityDisplayName}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Saved Areas -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="8"
+                            Padding="16"
+                            Visibility="{x:Bind ViewModel.SavedAreas.Count, Mode=OneWay, Converter={StaticResource IntToVisibility}}">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="?? Aree Salvate"
+                                       FontSize="18"
+                                       FontWeight="SemiBold" />
+
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.SavedAreas, Mode=OneWay}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                                CornerRadius="4"
+                                                Padding="12"
+                                                Margin="0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Name}"
+                                                               FontWeight="SemiBold" />
+                                                    <TextBlock Foreground="Gray"
+                                                               FontSize="12">
+                                                        <Run Text="{Binding Lat1}" />
+                                                        <Run Text=", " />
+                                                        <Run Text="{Binding Lon1}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+
+                                                <Button Grid.Column="1"
+                                                        Content="Usa"
+                                                        Click="OnUseSavedArea" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

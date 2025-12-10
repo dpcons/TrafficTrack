@@ -25,37 +25,37 @@ public class TrafficRepository : ITrafficRepository
         return await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TrafficIncident>> GetTrafficIncidentsAsync(DateTime? from = null, DateTime? to = null, string? area = null, string? severity = null, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TrafficIncident>> GetTrafficIncidentsAsync(DateTime? from = null, DateTime? to = null, string? area = null, string? severity = null, int? monitoringSessionId = null,
+        double? minLat = null, double? maxLat = null, double? minLon = null, double? maxLon = null, CancellationToken cancellationToken = default)
     {
         var query = _context.TrafficIncidents.AsQueryable();
 
-        if (from.HasValue)
-            query = query.Where(i => i.RecordedAt >= from.Value);
-
-        if (to.HasValue)
-            query = query.Where(i => i.RecordedAt <= to.Value);
-
-        if (!string.IsNullOrWhiteSpace(area))
-            query = query.Where(i => i.Area == area);
-
-        if (!string.IsNullOrWhiteSpace(severity))
-            query = query.Where(i => i.Severity == severity);
+        if (from.HasValue) query = query.Where(i => i.RecordedAt >= from.Value);
+        if (to.HasValue) query = query.Where(i => i.RecordedAt <= to.Value);
+        if (!string.IsNullOrWhiteSpace(area)) query = query.Where(i => i.Area == area);
+        if (!string.IsNullOrWhiteSpace(severity)) query = query.Where(i => i.Severity == severity);
+        if (monitoringSessionId.HasValue) query = query.Where(i => i.MonitoringSessionId == monitoringSessionId.Value);
+        if (minLat.HasValue) query = query.Where(i => i.Latitude >= minLat.Value);
+        if (maxLat.HasValue) query = query.Where(i => i.Latitude <= maxLat.Value);
+        if (minLon.HasValue) query = query.Where(i => i.Longitude >= minLon.Value);
+        if (maxLon.HasValue) query = query.Where(i => i.Longitude <= maxLon.Value);
 
         return await query.OrderByDescending(i => i.RecordedAt).ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TrafficFlow>> GetTrafficFlowsAsync(DateTime? from = null, DateTime? to = null, string? area = null, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TrafficFlow>> GetTrafficFlowsAsync(DateTime? from = null, DateTime? to = null, string? area = null, int? monitoringSessionId = null,
+        double? minLat = null, double? maxLat = null, double? minLon = null, double? maxLon = null, CancellationToken cancellationToken = default)
     {
         var query = _context.TrafficFlows.AsQueryable();
 
-        if (from.HasValue)
-            query = query.Where(f => f.RecordedAt >= from.Value);
-
-        if (to.HasValue)
-            query = query.Where(f => f.RecordedAt <= to.Value);
-
-        if (!string.IsNullOrWhiteSpace(area))
-            query = query.Where(f => f.Area == area);
+        if (from.HasValue) query = query.Where(f => f.RecordedAt >= from.Value);
+        if (to.HasValue) query = query.Where(f => f.RecordedAt <= to.Value);
+        if (!string.IsNullOrWhiteSpace(area)) query = query.Where(f => f.Area == area);
+        if (monitoringSessionId.HasValue) query = query.Where(f => f.MonitoringSessionId == monitoringSessionId.Value);
+        if (minLat.HasValue) query = query.Where(f => f.Latitude >= minLat.Value);
+        if (maxLat.HasValue) query = query.Where(f => f.Latitude <= maxLat.Value);
+        if (minLon.HasValue) query = query.Where(f => f.Longitude >= minLon.Value);
+        if (maxLon.HasValue) query = query.Where(f => f.Longitude <= maxLon.Value);
 
         return await query.OrderByDescending(f => f.RecordedAt).ToListAsync(cancellationToken);
     }

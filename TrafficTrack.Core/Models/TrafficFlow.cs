@@ -13,4 +13,5 @@ public class TrafficFlow
     public string RoadName { get; set; } = string.Empty;
     public DateTime RecordedAt { get; set; }
     public string Area { get; set; } = string.Empty;
+    public int? MonitoringSessionId { get; set; }
 }
