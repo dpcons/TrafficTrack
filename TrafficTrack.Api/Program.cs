@@ -3,7 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using TrafficTrack.Api.Data;
 using TrafficTrack.Api.Services;
 
@@ -74,7 +74,7 @@ builder.Services.AddSwaggerGen(options =>
 Questa API permette di:
 - **Ottenere informazioni sul traffico** in tempo reale per un'area geografica
 - **Visualizzare eventi stradali** (incidenti, lavori, manifestazioni)
-- **Filtrare eventi** per tipo, severità e intervallo temporale
+- **Filtrare eventi** per tipo, severitÃ  e intervallo temporale
 - **Salvare aree di interesse** per un accesso rapido
 
 ### Autenticazione
@@ -100,18 +100,11 @@ L'API utilizza autenticazione JWT. Per ottenere un token:
         Scheme = "Bearer"
     });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
     {
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
+            new OpenApiSecuritySchemeReference("Bearer", null),
+            new List<string>()
         }
     });
 
