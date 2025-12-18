@@ -57,3 +57,6 @@ nunit-*.xml
 *.db
 *.db-shm
 *.db-wal
+
+# VIsual Studio temp file
+.vs

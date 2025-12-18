@@ -16,10 +16,19 @@ public class TrafficTrackingService : ITrafficTrackingService
 
     public async Task TrackTrafficAsync(BoundingBox area, CancellationToken cancellationToken = default)
     {
+        await TrackTrafficAsync(area, null, cancellationToken);
+    }
+
+    public async Task TrackTrafficAsync(BoundingBox area, int? monitoringSessionId, CancellationToken cancellationToken = default)
+    {
         // Fetch traffic incidents
         var incidents = await _apiClient.GetTrafficIncidentsAsync(area, cancellationToken);
         if (incidents.Any())
         {
+            if (monitoringSessionId.HasValue)
+            {
+                foreach (var i in incidents) i.MonitoringSessionId = monitoringSessionId.Value;
+            }
             await _repository.SaveTrafficIncidentsAsync(incidents, cancellationToken);
         }
 
@@ -27,6 +36,10 @@ public class TrafficTrackingService : ITrafficTrackingService
         var flows = await _apiClient.GetTrafficFlowAsync(area, cancellationToken);
         if (flows.Any())
         {
+            if (monitoringSessionId.HasValue)
+            {
+                foreach (var f in flows) f.MonitoringSessionId = monitoringSessionId.Value;
+            }
             await _repository.SaveTrafficFlowsAsync(flows, cancellationToken);
         }
     }

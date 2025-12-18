@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficTrack.Core", "TrafficTrack.Core\TrafficTrack.Core.csproj", "{88D6EA05-9CEA-4196-A2F4-88A061F9364B}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficTrack.Console", "TrafficTrack.Console\TrafficTrack.Console.csproj", "{1639E53B-B381-49D0-819A-8F2DCC43984D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficTrack.Tests", "TrafficTrack.Tests\TrafficTrack.Tests.csproj", "{6577169F-C1DF-478D-AF39-A5A1993B34FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficTrack.Api", "TrafficTrack.Api\TrafficTrack.Api.csproj", "{22DB82AF-DD56-4269-B093-EC507426A47D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,18 @@ Global
 		{6577169F-C1DF-478D-AF39-A5A1993B34FC}.Release|x64.Build.0 = Release|Any CPU
 		{6577169F-C1DF-478D-AF39-A5A1993B34FC}.Release|x86.ActiveCfg = Release|Any CPU
 		{6577169F-C1DF-478D-AF39-A5A1993B34FC}.Release|x86.Build.0 = Release|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Debug|x64.Build.0 = Debug|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Debug|x86.Build.0 = Debug|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Release|x64.ActiveCfg = Release|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Release|x64.Build.0 = Release|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Release|x86.ActiveCfg = Release|Any CPU
+		{22DB82AF-DD56-4269-B093-EC507426A47D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
