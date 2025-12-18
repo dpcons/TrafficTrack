@@ -1,6 +1,6 @@
 # TrafficTrack
 
-A .NET 8.0 application that integrates with Azure Maps Traffic API to track traffic in specified areas, store the data, and provide analytics with filtering capabilities.
+A .NET 10.0 application that integrates with Azure Maps Traffic API to track traffic in specified areas, store the data, and provide analytics with filtering capabilities.
 
 ## Features
 
